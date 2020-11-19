@@ -5,10 +5,9 @@ Repozitorij z gradivi pri predmetu APPR v študijskem letu 2020/21
 * [![Shiny](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/oskarvavtar/APPR-2020-21/master?urlpath=shiny/APPR-2020-21/projekt.Rmd) Shiny
 * [![RStudio](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/oskarvavtar/APPR-2020-21/master?urlpath=rstudio) RStudio
 
-## Tematika
+## Analiza glasbenih festivalov
 
-Izbrali si boste temo, s katero se bo vaš projekt ukvarjal.
-Tukaj boste napisali, kje ste dobili podatke, ter kakšen je vaš cilj.
+Analiziral bom podatke 14 pomembnih glasbenih festivalov v VB. Podatke sem našel v [github repozitoriju](https://github.com/BBC-Data-Unit/music-festivals), zbrani pa so bili v namen pisanja naslednjega [članka](https://www.bbc.com/news/uk-england-40273193). Zanima me predvsem predvsem priljubljenost žanrov in izvajalcev na festivlih in kako se je to spreminjalo skozi leta. Zanima me tudi kateri žanri so bolj priljubljeni na festivalih kot sicer, ter obratno.
 
 ## Program
 
