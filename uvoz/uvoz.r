@@ -1,55 +1,60 @@
 # 2. faza: Uvoz podatkov
 
-sl <- locale("sl", decimal_mark=",", grouping_mark=".")
+library(dplyr)
+library(tidyr)
+library(readr)
+library(stringr)
 
-# Funkcija, ki uvozi občine iz Wikipedije
-uvozi.obcine <- function() {
-  link <- "http://sl.wikipedia.org/wiki/Seznam_ob%C4%8Din_v_Sloveniji"
-  stran <- html_session(link) %>% read_html()
-  tabela <- stran %>% html_nodes(xpath="//table[@class='wikitable sortable']") %>%
-    .[[1]] %>% html_table(dec=",")
-  for (i in 1:ncol(tabela)) {
-    if (is.character(tabela[[i]])) {
-      Encoding(tabela[[i]]) <- "UTF-8"
-    }
-  }
-  colnames(tabela) <- c("obcina", "povrsina", "prebivalci", "gostota", "naselja",
-                        "ustanovitev", "pokrajina", "regija", "odcepitev")
-  tabela$obcina <- gsub("Slovenskih", "Slov.", tabela$obcina)
-  tabela$obcina[tabela$obcina == "Kanal ob Soči"] <- "Kanal"
-  tabela$obcina[tabela$obcina == "Loški potok"] <- "Loški Potok"
-  for (col in c("povrsina", "prebivalci", "gostota", "naselja", "ustanovitev")) {
-    if (is.character(tabela[[col]])) {
-      tabela[[col]] <- parse_number(tabela[[col]], na="-", locale=sl)
-    }
-  }
-  for (col in c("obcina", "pokrajina", "regija")) {
-    tabela[[col]] <- factor(tabela[[col]])
-  }
+################################################################################
+
+# glasbene lestvice
+  
+uvozi_lestvico <- function(ime_datoteke){
+  ime <- paste0("podatki/charts/", 
+                ime_datoteke, ".csv")
+  tabela <- read_csv2(ime) %>% select(2:4, 6) %>%
+    rename(Naslov=1, Izvajalec=2, Zvrst=3, Leto=4)
   return(tabela)
 }
 
-# Funkcija, ki uvozi podatke iz datoteke druzine.csv
-uvozi.druzine <- function(obcine) {
-  data <- read_csv2("podatki/druzine.csv", col_names=c("obcina", 1:4),
-                    locale=locale(encoding="Windows-1250"))
-  data$obcina <- data$obcina %>% strapplyc("^([^/]*)") %>% unlist() %>%
-    strapplyc("([^ ]+)") %>% sapply(paste, collapse=" ") %>% unlist()
-  data$obcina[data$obcina == "Sveti Jurij"] <- iconv("Sveti Jurij ob Ščavnici", to="UTF-8")
-  data <- data %>% pivot_longer(`1`:`4`, names_to="velikost.druzine", values_to="stevilo.druzin")
-  data$velikost.druzine <- parse_number(data$velikost.druzine)
-  data$obcina <- parse_factor(data$obcina, levels=obcine)
-  return(data)
-}
+lestvica70 <- uvozi_lestvico("1970s")
 
-# Zapišimo podatke v razpredelnico obcine
-obcine <- uvozi.obcine()
+lestvica80 <- uvozi_lestvico("1980s")
 
-# Zapišimo podatke v razpredelnico druzine.
-druzine <- uvozi.druzine(levels(obcine$obcina))
+lestvica90 <- uvozi_lestvico("1990s")
 
-# Če bi imeli več funkcij za uvoz in nekaterih npr. še ne bi
-# potrebovali v 3. fazi, bi bilo smiselno funkcije dati v svojo
-# datoteko, tukaj pa bi klicali tiste, ki jih potrebujemo v
-# 2. fazi. Seveda bi morali ustrezno datoteko uvoziti v prihodnjih
-# fazah.
+lestvica00 <- uvozi_lestvico("2000s")
+
+lestvica10 <- uvozi_lestvico("2010s")
+
+################################################################################
+
+# festivali
+
+# ------------------------------------------------------------------------------
+
+# zvrsti izvajalcev
+
+izvajalci_zvrsti <- read_csv2("podatki/appearance_plus_genres.csv") %>% select(1:2, 4:5) %>%
+  rename(Festival=1, Leto=2, Izvajalec=3, Zvrst=4) %>% .[c(2, 3, 4, 1)] %>%
+  mutate(Izvajalec=str_to_title(Izvajalec)) %>%
+  mutate(Festival=str_to_title(Festival))
+
+# ------------------------------------------------------------------------------
+
+# nastopi
+
+izvajalci_ostalo <- read_csv2("podatki/festival_headliners.csv") %>% 
+  select(1:4, 7, 10:11, 14:15) %>%
+  rename(Leto=2, Lokacija=3, Grofija=4, Izvajalec=5, Ustanovitev=6, Izvor=7, Spol=8, Starost=9) %>%
+  .[c(2, 5:9, 1, 3:4)] %>% mutate(Starost=(Starost-(2017-Leto))) %>%
+  mutate(Festival=str_to_title(Festival)) %>%
+  mutate(Lokacija=str_to_title(Lokacija)) %>%
+  mutate(Grofija=str_to_title(Grofija)) %>%
+  mutate(Izvajalec=str_to_title(Izvajalec)) %>%
+  mutate(Izvor=str_to_title(Izvor))
+
+################################################################################
+
+
+
