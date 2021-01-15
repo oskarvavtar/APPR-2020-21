@@ -4,6 +4,13 @@ library(gsubfn)
 library(tidyr)
 library(tmap)
 library(shiny)
+library(stringr)
+library(maps)
+library(mapdata)
+library(ggmap)
+library(broom)
+library(rgdal)
+
 
 options(gsubfn.engine="R")
 

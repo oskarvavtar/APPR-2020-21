@@ -1,13 +1,13 @@
 ---
 title: "Poročilo pri predmetu Analiza podatkov s programom R"
-author: "Študent FMF"
+author: "Oskar Vavtar"
 output:
   html_document: default
   pdf_document:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-runtime: shiny
+#runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -24,9 +24,35 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 # Izbira teme
 
-Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
+Analizirali bomo 14 velikih britanskih glasbenih festivalov. To so: 
 
-![](slike/grb.png)
+  * Bestival
+  * Boardmasters
+  * Cornbury festival
+  * Download
+  * End Of The Road Festival
+  * Glastonbury
+  * Isle Of Wight
+  * Latitude
+  * Lovebox
+  * Reading
+  * Rewind
+  * T In The Park
+  * V Festival
+  * Wireless
+  
+Analizirali bomo pogostost glasbenih zvrsti ter karakteristike izvajalcev, kot so spol, starost, izvor... Pogostost zvrsti na festivalih bomo po desetletjih primerjali tudi z glasbenimi lestvicami (oz. zvrsti najbolj prodajanih albumov).
+
+Podatki o festivalih so bili zbrani iz [github repozitorija](https://github.com/BBC-Data-Unit/music-festivals), ki je bil ustvarjen za namene pisanja naslednjega [članka](https://www.bbc.com/news/uk-england-40273193). Zajemajo podatke med leti 1970 in 2017, ter zajemajo nastope glavnih nastopajočih (headlinerjih) na zgoraj naštetih festivalih.
+
+Tabele glasbenih lestvic so bili zbrani iz Wikipedije:
+
+  * [1970-1979](https://en.wikipedia.org/wiki/List_of_best-selling_albums_of_the_1970s_in_the_United_Kingdom)
+  * [1980-1989](https://en.wikipedia.org/wiki/List_of_best-selling_albums_of_the_1980s_in_the_United_Kingdom)
+  * [1990-1999](https://en.wikipedia.org/wiki/List_of_best-selling_albums_of_the_1990s_in_the_United_Kingdom)
+  * [2000-2009](https://en.wikipedia.org/wiki/List_of_best-selling_albums_of_the_2000s_(decade)_in_the_United_Kingdom)
+  * [2010-2019](https://en.wikipedia.org/wiki/List_of_best-selling_albums_of_the_2010s_in_the_United_Kingdom)
+
 
 ***
 
@@ -36,33 +62,40 @@ Za vzorec bomo prikazali nekaj podatkov o slovenskih občinah.
 source("uvoz/uvoz.r", encoding="UTF-8")
 ```
 
-Uvozili smo podatke o občinah v obliki CSV s statističnega urada ter v obliki HTML
-z Wikipedije. Podatke imamo v dveh razpredelnicah v obliki *tidy data*.
+V drugi fazi smo uvozili podatke, ki so bili v obliki CSV.
 
-1. `druzine` - podatki o družinah za vsako občino
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `velikost.druzine` - spremenljivka: število otrok v družini (število: 1, 2, 3 ali 4, kjer zadnja vrednost pomeni 4 ali več),
-  - `stevilo.druzin` - meritev: število družin z ustreznim številom otrok v ustrezni občini (število).
+Podatke o nastopih na festivalih smo uvozili v dve različni tabeli:
 
-2. `obcine` - podatki o občinah
-  - `obcina` - spremenljivka: ime občine (neurejen faktor),
-  - `povrsina` - meritev: površina občine v km$^2$ (število),
-  - `prebivalci` - meritev: prebivalstvo občine (število),
-  - `gostota` - meritev: število prebivalcev na km$^2$ (število),
-  - `naselja` - meritev: število naselij v občini (število),
-  - `ustanovitev` - meritev: leto ustanovitve občine (število),
-  - `pokrajina` - meritev: pokrajina, ki ji občina pripada (neurejen faktor),
-  - `regija` - meritev: regija, ki ji občina pripada (neurejen faktor),
-  - `odcepitev` - meritev: podatki o občinah, od katerih se je občina odcepila (besedilo).
+Osrednja tema prve so bili žanri izvajalcev:
 
-**Opomba**: da bi razpredelnica `obcine` res bila v obliki *tidy data*, bi morali odstraniti stolpec `gostota` (saj je izpeljan iz stolpcev `povrsina` in `prebivalci`), podatke o pokrajinah pa bi morali premakniti v drugo razpredelnico, saj nekatere občine pripadajo dvema pokrajinama. Podobno bi morali narediti tudi s stolpcem `odcepitev`.
+1. `izvajalci_zvrsti` je razpredelnica s tremi dimenzijami:
+  - `Izvajalec` - meritev: ime izvajalca
+  - `Leto` - spremenljivka: leto nastopa
+  - `Festival` - spremenljivka: festival na katerem je nastopil
+  - `Zvrst` - spremenljivka: glavna zvrst izvajalca
+  
+Druga tema zajema ostale podatke o nastopih:
 
-Spodnji graf prikazuje porazdelitev števila naselij v občinah.
+2. `izvajalci_ostalo` je razpredelnica z osmimi dimenzijami:
+  - `Izvajalec` - meritev: ime izvajalca
+  - `Leto` - spremenljivka: leto nastopa
+  - `Ustanovitev` - spremenljivka: leto od katerega je izvajalec aktiven
+  - `Izvor` - spremenljivka: država iz katere izvajalec prihaja
+  - `Spol` - spremenljivka: spol izvajalca
+  - `Starost` - spremenljivka: starost izvajalca v letu nastopa
+  - `Festival` - spremenljivka: festival na katerem je nastopil
+  - `Lokacija` - spremenljivka: kraj festivala
+  - `Grofija` - spremenljivka: grofija, v kateri je kraj festivala
+  
+Podatke o najbolj prodajanih albumih desetletij, sem uvozil v 5 različnih tabel, vsako za svoje desetletje:
 
-```{r histogram, fig.align='center', fig.cap='Histogram števila naselij v občinah'}
-ggplot(obcine, aes(x=naselja)) + geom_histogram() +
-  ggtitle("Pogostost števila naselij") + xlab("Število naselij") + ylab("Število občin")
-```
+3. `lestvica70`, `lestvica80`, `lestvica90`, `lestvica00` in `lestvica10` so razpredelnice s tremi dimenzijami:
+  - `Naslov` - meritev: naslov albuma
+  - `Izvajalec` - spremenljivka: izvajalec albuma
+  - `Zvrst` - spremenljivka: zvrst album
+  - `Leto` - spremenljivka: leto v katerem je album izšel
+  
+
 
 ***
 
@@ -72,36 +105,44 @@ ggplot(obcine, aes(x=naselja)) + geom_histogram() +
 source("vizualizacija/vizualizacija.r", encoding="UTF-8")
 ```
 
-Spodnji zemljevid prikazuje povprečno velikost družine za vsako občino.
+Prvi graf prikazuje pogostost zvrsti na festivalih v vseh letih opazovanja:
 
-```{r zemljevid, fig.align='center', fig.cap='Zemljevid povprečnega števila otrok v družini'}
-tm_shape(merge(zemljevid, povprecja, by.x="OB_UIME", by.y="obcina")) +
-  tm_polygons("povprecje", title="Povprečje") +
-  tm_layout(title="Povprečno število otrok v družini")
+```{r graf_zvrsti, echo=FALSE, fig.align='center'}
+graf_zvrsti
 ```
+
+Iz grafa lahko razberemo, da je rock bil od leta 1970 do leta 2017 rock daleč najpogostejša zvrst na festivalih. Veliko manj, vendar vseeno pogoste zvrsti so bile elektronska glasba, indie ter new wave. Pop se po pogostosti znajde šele na petem mestu. Glede na to, da so to podatki britanskih festivalov je morda malo presenetljiv majhen delež punka.
+
+
+
+Drugi graf prikazuje primerjavo gibanja pogostosti rocka skozi desetletja na festivalih ter glasbenih lestvicah:
+
+```{r pogostost_rock, echo=FALSE, fig.align='center'}
+pogostost_rock
+```
+
+Graf nam pokaže, da sta bila deleža v prvih dveh desetletjih. V 90-ih pa je sledil preobrat. Rocka je bilo na lestvicah sicer občutno manj, na festivalih pa ga je blo več kot prej. V prvem desetletju novega tisočletja je nato sledil padec na obeh frontah, desetletje kasneje pa scenarij podoben tistemu iz 90-let. Na tej točki je na festivalih rock prispeval 57.5% glavnih nastopajočih, po drugi strani pa le 13.75% najbolje prodajanih albumov.
+
+
+
+Tretji in četrti graf prikazujeta reprezentacijo spolov:
+
+```{r, figures-side, fig.show="hold", out.width="50%"}
+spol2
+spol1
+```
+
+Levi graf prikazuje zgolj deleže, na desnem pa lahko vidimo tudi velikost vzorca, da stvar bolje postavijo v perspektivo. Jasno vidimo, da je vseskozi večinski del nastopajočih moškega spola. Ta delež je še najmanjši v 80-ih letih ter v drugem desetletju novega tisočletja. V zadnjem desetletju lahko vidimo tudi največji delež ženskih izvajalk. Trend, ki ga lahko opazimo je, da delež moških izvajalcev sčasoma sicer pada, z izjemo med leti 2000 in 2009. 
+
+
+
+Peti graf prikazuje države izvora izvajalcev:
+
+```{r izvor_graf, echo=FALSE, fig.align='center'}
+izvor_graf
+```
+
+Vidimo, da je največji delež - skoraj polovica - izvajalcev iz Anglije, kar je bilo tudi pričakovati. Po pogostosti sledita ZDA s skoraj tretjinskim deležem ter Škotska s slabimi 6% nastopajočih. Več kot odstotek nastopajočih lahko pripišemo le še Walesu (2.8%) ter Kanadi (2.3%).
 
 ***
 
-# Napredna analiza podatkov
-
-```{r analiza}
-source("analiza/analiza.r", encoding="UTF-8")
-```
-
-Spodnji graf prikazuje povezavo med številom naselij in površino občine.
-
-```{r graf, fig.align='center', fig.cap='Povezava med številom naselij in površino občine'}
-ggplot(inner_join(obcine, data.frame(obcina=names(skupine),
-                                     skupina=factor(skupine)), by="obcina")
-, aes(x=povrsina, y=naselja, color=skupina, size=prebivalci/1000)) + geom_point() +
-  ggtitle("Število naselij glede na površino občine") +
-  xlab(expression("Površina (km"^2 * ")")) + ylab("Št. naselij") +
-  guides(color=guide_legend(title="Skupina"),
-         size=guide_legend(title="Prebivalci (* 1000)"))
-```
-
-***
-
-```{r shiny}
-shinyAppDir("shiny", options=list(width="100%", height=600))
-```

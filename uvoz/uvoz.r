@@ -1,13 +1,7 @@
 # 2. faza: Uvoz podatkov
 
-library(dplyr)
-library(tidyr)
-library(readr)
-library(stringr)
 
-################################################################################
-
-# glasbene lestvice
+# glasbene lestvice ############################################################
   
 uvozi_lestvico <- function(ime_datoteke){
   ime <- paste0("podatki/charts/", 
@@ -27,9 +21,8 @@ lestvica00 <- uvozi_lestvico("2000s")
 
 lestvica10 <- uvozi_lestvico("2010s")
 
-################################################################################
 
-# festivali
+# festivali ####################################################################
 
 # ------------------------------------------------------------------------------
 
@@ -52,9 +45,21 @@ izvajalci_ostalo <- read_csv2("podatki/festival_headliners.csv") %>%
   mutate(Lokacija=str_to_title(Lokacija)) %>%
   mutate(Grofija=str_to_title(Grofija)) %>%
   mutate(Izvajalec=str_to_title(Izvajalec)) %>%
-  mutate(Izvor=str_to_title(Izvor))
+  mutate(Izvor=str_to_title(Izvor)) %>%
+  mutate(Spol=str_to_title(Spol))
 
-################################################################################
+# ------------------------------------------------------------------------------
+
+
+# zemljevid ####################################################################
+
+#shapefile <- readOGR(dsn="podatki/shapefiles",
+#                     layer = "NUTS_Level_2__January_2018__Boundaries")
+#mapdata <- tidy(shapefile, region="nuts218nm")
+
+
+
+
 
 
 
