@@ -1,24 +1,28 @@
-library(shiny)
+#library(shiny)
 
 shinyServer(function(input, output) {
-  output$druzine <- DT::renderDataTable({
-    druzine %>% pivot_wider(names_from="velikost.druzine", values_from="stevilo.druzin") %>%
-      rename(`Občina`=obcina)
-  })
+  output$starosti <- renderPlot({
+    vektor <- rep(1, length(izvajalci_ostalo$Starost))
+    podatki <- izvajalci_ostalo %>% 
+      mutate(Desetletje=(Leto%/%10*10)) 
+    podatki$Pojavitev <- vektor 
+    podatki <- podatki %>%
+      filter(Desetletje == input$Desetletje) %>%
+      select(Starost, Pojavitev) %>%
+      group_by(Starost) %>%
+      summarise(Število=sum(Pojavitev))
+    
+    ggplot(data=podatki, aes(x=Starost, y=Število)) +
+      geom_col()
   
-  output$pokrajine <- renderUI(
-    selectInput("pokrajina", label="Izberi pokrajino",
-                choices=c("Vse", levels(obcine$pokrajina)))
-  )
-  output$naselja <- renderPlot({
-    main <- "Pogostost števila naselij"
-    if (!is.null(input$pokrajina) && input$pokrajina %in% levels(obcine$pokrajina)) {
-      t <- obcine %>% filter(pokrajina == input$pokrajina)
-      main <- paste(main, "v regiji", input$pokrajina)
-    } else {
-      t <- obcine
-    }
-    ggplot(t, aes(x=naselja)) + geom_histogram() +
-      ggtitle(main) + xlab("Število naselij") + ylab("Število občin")
+  })
+  output$pogostost_zanrov <- renderPlot({
+    podatki2 <- zanri  
+    prikazani <- as.vector(c(podatki2$Desetletje, podatki2$Vrste, podatki2$input))
+    podatki2 <- df[,prikazani]
+    
+    ggplot(data=podatki2, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
+      geom_point() + 
+      geom_line()
   })
 })

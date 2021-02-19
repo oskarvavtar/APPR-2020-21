@@ -10,7 +10,8 @@ library(mapdata)
 library(ggmap)
 library(broom)
 library(rgdal)
-
+library(shinythemes)
+library(tidyverse)
 
 options(gsubfn.engine="R")
 
