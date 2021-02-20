@@ -1,23 +1,14 @@
 
 # 3. faza: Vizualizacija podatkov
 
-#vektor <- rep(1, length(izvajalci_ostalo$Starost))
-#podatki <- izvajalci_ostalo %>% 
-  #mutate(Desetletje=(Leto%/%10*10)) 
-#podatki$Pojavitev <- vektor 
-#podatki <- podatki %>%
-  #filter(Desetletje == 2010$Desetletje) %>%
-  #select(Starost, Pojavitev) %>%
-  #group_by(Starost) %>%
-  #summarise(Število=sum(Pojavitev))
+podatki <- zanri  %>% select(Desetletje, Vrste, "Rock") %>% 
+  rename(Pogostost=3)
+#prikazani <- as.vector(c(podatki$Desetletje, podatki$Vrste, podatki$input))
+#podatki <- df[,prikazani]
 
-#podatki <- podatki %>% filter(Desetletje == 2010)
-#podatki <- podatki %>% select(Starost, Pojavitev)
-#podatki <- podatki %>% group_by(Starost) 
-#podatki <- podatki %>% summarise(Število=sum(Pojavitev))
-
-#grafek <- ggplot(data=podatki, aes(x=Starost, y=Število)) +
-  #geom_col()
+ggplot(data=podatki, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
+  geom_point() + 
+  geom_line()
 
 
 # Pogostost zvrsti #############################################################
@@ -183,6 +174,10 @@ pogostost_rock_tabela <- merge(lestvice_rock, festivali_rock, by="Desetletje") %
   dplyr::rename(Lestvice=2, Festivali=3) %>%
   pivot_longer(c=(-Desetletje), names_to="Vrste", values_to="Pogostost") %>%
   mutate(Desetletje=parse_number(Desetletje))
+
+pogostost_rock <- ggplot(data=podatki, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
+  geom_point() + 
+  geom_line()
 
 # pogostost popa ###############################################################
 
@@ -429,8 +424,8 @@ zdruzi <- function(tabela1, tabela2){
 }
 
 zanri <- Reduce(zdruzi, zanri) %>%
-  dplyr::rename(Rock=3, Pop=4, Indie=5, Folk=6, Hiphop=7, Jazz=8, Soul=9, Punk=10,
-         EDM=11, Metal=12)
+  dplyr::rename("Rock"=3, "Pop"=4, "Indie"=5, "Folk"=6, "Hiphop"=7, "Jazz"=8, 
+                "Soul"=9, "Punk"=10, "EDM"=11, "Metal"=12)
 
 # lokacije festivalov - grofije ################################################
 

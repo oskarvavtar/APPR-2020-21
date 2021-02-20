@@ -15,7 +15,8 @@ shinyUI(
                                                      "1980-a"="1980", 
                                                      "1990-a"="1990", 
                                                      "2000-a"="2000",
-                                                     "2010-a"="2010"))),
+                                                     "2010-a"="2010"),
+                                        selected = "1990")),
                           
                           mainPanel(
                             plotOutput(outputId = "starosti"))
@@ -27,9 +28,19 @@ shinyUI(
                           sidebarPanel(
                             selectInput(inputId = "Zvrst",
                                         label = "Zvrst:",
-                                        choices = c("Rock"))),
+                                        choices = c("Rock",
+                                                    "Pop",
+                                                    "Indie",
+                                                    "Folk",
+                                                    "Hiphop",
+                                                    "Jazz",
+                                                    "Soul",
+                                                    "Punk",
+                                                    "EDM",
+                                                    "Metal"),
+                                        selected = "Soul")),
                           mainPanel(
-                            plotOutput(outputId="desetletje"))
+                            plotOutput(outputId="pogostost_zanrov"))
                           ))
 
     ) 
