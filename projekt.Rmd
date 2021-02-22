@@ -7,7 +7,7 @@ output:
     includes:
       in_header: lib/styles.sty
     latex_engine: xelatex
-#runtime: shiny
+runtime: shiny
 ---
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
@@ -143,6 +143,15 @@ izvor_graf
 ```
 
 Vidimo, da je največji delež - skoraj polovica - izvajalcev iz Anglije, kar je bilo tudi pričakovati. Po pogostosti sledita ZDA s skoraj tretjinskim deležem ter Škotska s slabimi 6% nastopajočih. Več kot odstotek nastopajočih lahko pripišemo le še Walesu (2.8%) ter Kanadi (2.3%).
+
+***
+
+# Shiny
+
+```{r shiny, echo=FALSE}
+shinyAppDir("shiny", options=list(width="100%", height=800))
+```
+
 
 ***
 
