@@ -1,16 +1,6 @@
 
 # 3. faza: Vizualizacija podatkov
 
-podatki <- zanri  %>% select(Desetletje, Vrste, "Rock") %>% 
-  rename(Pogostost=3)
-#prikazani <- as.vector(c(podatki$Desetletje, podatki$Vrste, podatki$input))
-#podatki <- df[,prikazani]
-
-ggplot(data=podatki, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
-  geom_point() + 
-  geom_line()
-
-
 # Pogostost zvrsti #############################################################
 
 pogostost_zvrsti <- count(izvajalci_zvrsti, Zvrst) %>% dplyr::rename(Pojavitev=2) %>%
@@ -175,7 +165,7 @@ pogostost_rock_tabela <- merge(lestvice_rock, festivali_rock, by="Desetletje") %
   pivot_longer(c=(-Desetletje), names_to="Vrste", values_to="Pogostost") %>%
   mutate(Desetletje=parse_number(Desetletje))
 
-pogostost_rock <- ggplot(data=podatki, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
+pogostost_rock <- ggplot(data=pogostost_rock_tabela, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
   geom_point() + 
   geom_line()
 
