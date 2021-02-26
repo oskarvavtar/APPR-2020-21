@@ -19,4 +19,14 @@ shinyServer(function(input, output) {
       geom_point() + 
       geom_line()
   })
+  output$ustanovitve <- renderPlot({
+    izvajalci_ostalo %>%
+      filter(Leto%/%10*10 == input$Desetletje_2) %>%
+      group_by(Ustanovitev) %>%
+      summarise(Število=n()) %>%
+      
+      ggplot(aes(x=Ustanovitev, y=Število)) +
+      geom_col()
+    
+  })
 })

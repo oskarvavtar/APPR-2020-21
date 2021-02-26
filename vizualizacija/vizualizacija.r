@@ -8,7 +8,8 @@ pogostost_zvrsti <- count(izvajalci_zvrsti, Zvrst) %>% dplyr::rename(Pojavitev=2
 
 graf_zvrsti <- ggplot(data=pogostost_zvrsti, aes(x=Zvrst)) +
   geom_col(aes(y=Pojavitev)) + 
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title = "Pogostost zvrsti")
 
 # Izvor ########################################################################
 
@@ -19,7 +20,8 @@ izvor[nrow(izvor), 1] <- "?"
 izvor_graf <- ggplot(izvor, aes(x="", y=Pojavitev, fill=Izvor)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) + 
-  theme_void()
+  theme_void() +
+  labs(title = "Izvor izvajalcev")
 
 # Spol #########################################################################
 
@@ -71,14 +73,15 @@ spol_tabela1[18, 3] <- 0
 
 
 spol1 <- ggplot(data=spol_tabela1, aes(x=Desetletje, y=Pojavitev)) +
-  geom_bar(stat = "identity", aes(fill=Spol))
+  geom_bar(stat = "identity", aes(fill=Spol)) +
+  labs(title = "Reprezentacija spolov - količina")
 
 spol_tabela2 <- data.frame(spol80$Spol,
-                          spol70$Pogostost,
-                          spol80$Pogostost,
-                          spol90$Pogostost,
-                          spol00$Pogostost,
-                          spol10$Pogostost) %>%
+                           spol70$Pogostost,
+                           spol80$Pogostost,
+                           spol90$Pogostost,
+                           spol00$Pogostost,
+                           spol10$Pogostost) %>%
   dplyr::rename(Spol=1, "1970"=2, "1980"=3, "1990"=4, "2000"=5, "2010"=6) %>%
   pivot_longer(c=(-Spol), names_to="Desetletje", values_to="Pogostost") %>%
   mutate(Desetletje=parse_number(Desetletje)) 
@@ -89,7 +92,8 @@ spol_tabela2[18, 3] <- 0
 
 
 spol2 <- ggplot(data=spol_tabela2, aes(x=Desetletje, y=Pogostost)) +
-  geom_bar(stat = "identity", aes(fill=Spol))
+  geom_bar(stat = "identity", aes(fill=Spol)) +
+  labs(title = "Reprezantacija spolov - delež")
 
 # Lestvice ##############################################################
 
@@ -167,7 +171,8 @@ pogostost_rock_tabela <- merge(lestvice_rock, festivali_rock, by="Desetletje") %
 
 pogostost_rock <- ggplot(data=pogostost_rock_tabela, aes(x = Desetletje, y = Pogostost, col=Vrste)) + 
   geom_point() + 
-  geom_line()
+  geom_line() +
+  labs(title = "Delež rocka na festivalih in lestvicah")
 
 # pogostost popa ###############################################################
 
@@ -444,5 +449,6 @@ zamenjava <- setNames(rep("Scotland", length(scotland)), scotland) %>%
 mapdata$grofija <- zamenjava[as.character(mapdata$NAME_2)] %>% coalesce(mapdata$NAME_2)
 
 zemljevid <- tm_shape(merge(mapdata, grofije_tabela, by.x="grofija", by.y="id")) +
-  tm_polygons("Število festivalov", border.col=NULL)
+  tm_polygons("Število festivalov", border.col=NULL, showNA=FALSE) +
+  labs(title = "Lokacije festivalih po grofijah")
 

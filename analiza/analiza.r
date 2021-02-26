@@ -28,7 +28,8 @@ povprecne_starosti <- ggplot(povprecne_starosti_tabela,
   geom_smooth(method = lm, formula=y~x, fullrange=TRUE) +
   geom_point(data=napoved, aes(x = Desetletje, y = Starost),
              color = 'red', 
-             size = 5)
+             size = 5) +
+  labs(title = "Povprečna starost izvajalcev - po desetletjih")
 
 
 # Po letih #####################################################################  
@@ -56,4 +57,5 @@ povprecne_starosti_leta <- ggplot(povprecne_starosti_tabela_leta,
   geom_smooth(method = lm, formula=y~x, fullrange=TRUE) +
   geom_point(data=napoved_leta, aes(x = Leto, y = Starost),
              color = 'red', 
-             size = 2)
+             size = 2) + 
+  labs(title = "Povprečna starost izvajalcev - po letih")

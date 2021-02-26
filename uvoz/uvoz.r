@@ -47,7 +47,10 @@ izvajalci_ostalo <- read_csv2("podatki/festival_headliners.csv") %>%
   mutate(Grofija=str_to_title(Grofija)) %>%
   mutate(Izvajalec=str_to_title(Izvajalec)) %>%
   mutate(Izvor=str_to_title(Izvor)) %>%
-  mutate(Spol=str_to_title(Spol))
+  mutate(Spol=str_to_title(Spol)) %>% 
+  mutate(Grofija = str_replace(string = Grofija, 
+                               pattern = "Newport", 
+                               replacement = "Isle Of Wight"))
 
 # ------------------------------------------------------------------------------
 

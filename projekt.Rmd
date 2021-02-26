@@ -26,24 +26,26 @@ source("lib/rstudio.r", encoding="UTF-8")
 
 Analizirali bomo 14 velikih britanskih glasbenih festivalov. To so: 
 
-  * Bestival
-  * Boardmasters
-  * Cornbury festival
-  * Download
-  * End Of The Road Festival
-  * Glastonbury
-  * Isle Of Wight
-  * Latitude
-  * Lovebox
-  * Reading
-  * Rewind
-  * T In The Park
-  * V Festival
-  * Wireless
+  * Bestival (na Isle Of Wight in nekajkrat v Dorsetu )
+  * Boardmasters (v Cornwallu)
+  * Cornbury festival (v Oxfordshiru)
+  * Download (v Leicestershiru)
+  * End Of The Road Festival (v Dorsetu)
+  * Glastonbury (v Somersetu)
+  * Isle Of Wight (na Isle Of Wight)
+  * Latitude (v Suffolku)
+  * Lovebox (v Londonu)
+  * Reading (v Berkshiru)
+  * Rewind (v Berkshiru in na Škotskem)
+  * T In The Park (na Škotskem)
+  * V Festival (v Chelmsfordu)
+  * Wireless (v Londondu)
   
 Analizirali bomo pogostost glasbenih zvrsti ter karakteristike izvajalcev, kot so spol, starost, izvor... Pogostost zvrsti na festivalih bomo po desetletjih primerjali tudi z glasbenimi lestvicami (oz. zvrsti najbolj prodajanih albumov).
 
 Podatki o festivalih so bili zbrani iz [github repozitorija](https://github.com/BBC-Data-Unit/music-festivals), ki je bil ustvarjen za namene pisanja naslednjega [članka](https://www.bbc.com/news/uk-england-40273193). Zajemajo podatke med leti 1970 in 2017, ter zajemajo nastope glavnih nastopajočih (headlinerjih) na zgoraj naštetih festivalih.
+
+Opomba: količine podatkov ta posamezna desetletja niso niti približno podobne. Daleč največ podatkov je bilo za novo tisočletje, za 70-a leta pa zgolj 4 podatki. Vizualno lahko to razmerje vidimo v četrtem grafu.
 
 Tabele glasbenih lestvic so bili zbrani iz Wikipedije:
 
@@ -113,7 +115,7 @@ graf_zvrsti
 
 Iz grafa lahko razberemo, da je rock bil od leta 1970 do leta 2017 rock daleč najpogostejša zvrst na festivalih. Veliko manj, vendar vseeno pogoste zvrsti so bile elektronska glasba, indie ter new wave. Pop se po pogostosti znajde šele na petem mestu. Glede na to, da so to podatki britanskih festivalov je morda malo presenetljiv majhen delež punka.
 
-
+***
 
 Drugi graf prikazuje primerjavo gibanja pogostosti rocka skozi desetletja na festivalih ter glasbenih lestvicah:
 
@@ -121,9 +123,9 @@ Drugi graf prikazuje primerjavo gibanja pogostosti rocka skozi desetletja na fes
 pogostost_rock
 ```
 
-Graf nam pokaže, da sta bila deleža v prvih dveh desetletjih. V 90-ih pa je sledil preobrat. Rocka je bilo na lestvicah sicer občutno manj, na festivalih pa ga je blo več kot prej. V prvem desetletju novega tisočletja je nato sledil padec na obeh frontah, desetletje kasneje pa scenarij podoben tistemu iz 90-let. Na tej točki je na festivalih rock prispeval 57.5% glavnih nastopajočih, po drugi strani pa le 13.75% najbolje prodajanih albumov.
+Na grafu vidimo, da je bil rock v 70-izrazito najpogostejši na festivalih, na lestvicah pa je predstavljal malo manj kot polovico najbolj prodajanih albumov. V 80ih letih je bil na lestvicah malce popularnejši, močno pa je padla njegova prisotnost na festivalih, predvsem na račun popularnosti new wave-a. V naslednjem desetletju je sledil padec na lestivcah, na festivalih pa je rock zopet dosegel delež blizu tistemu v 70-ih. V novem tisočletju je delež tako na lestvicah kot na festivalih padal, predvsem zaradi večje žanrske raznolikosti.
 
-
+***
 
 Tretji in četrti graf prikazujeta reprezentacijo spolov:
 
@@ -134,7 +136,7 @@ spol1
 
 Levi graf prikazuje zgolj deleže, na desnem pa lahko vidimo tudi velikost vzorca, da stvar bolje postavijo v perspektivo. Jasno vidimo, da je vseskozi večinski del nastopajočih moškega spola. Ta delež je še najmanjši v 80-ih letih ter v drugem desetletju novega tisočletja. V zadnjem desetletju lahko vidimo tudi največji delež ženskih izvajalk. Trend, ki ga lahko opazimo je, da delež moških izvajalcev sčasoma sicer pada, z izjemo med leti 2000 in 2009. 
 
-
+***
 
 Peti graf prikazuje države izvora izvajalcev:
 
@@ -152,6 +154,22 @@ Vidimo, da je največji delež - skoraj polovica - izvajalcev iz Anglije, kar je
 shinyAppDir("shiny", options=list(width="100%", height=600))
 ```
 
+V Shinyju sem naredil 3 razdelke:
+
+ * Prvi predstavlja starosti izvajalcev v letu nastopa. Iz grafov lahko razberemo, da vsakič dobimo novo generacijo izvajalcev (v svojih 20-ih), obdržimo pa starejše generacije. To najlažje opazimo, če preverimo starosti najstarejših izvajalcev v desetletju. Ta številka se vsakič premakne za nekje blizu 10 let.
+ 
+ * V drugem razdelku sem posplošil tabele za deleže zvrsti na festivalih in lestvicah. Grafov sicer nisem narisal za vse žanre, le za tiste ki so bili skozi desetletja dovolj pogosti.
+ 
+ * V tretjem razdelku sem analiziral prvemu sorodno stvar: leta ustanovitve zasedb oz. začetka delovanja izvajalcev. Tudi iz teh grafov je razvidno, da vsakič dobimo nove izvajalce, nastale v tekočem desetletju, obdržimo pa tudi tiste stare, ki so aktivni že od 60-ih let prejšnjega stoletja.
 
 ***
+
+# Napredna analiza
+
+#```{r, figures-side-2, fig.show="hold", out.width="50%"}
+#povprecne_starosti
+#povprecne_starosti_leta
+#```
+
+V napredni analizi sem malo še naprej raziskal predpostavko, do katere sem prišel v Shiny analizi - da se izvajalci "starajo". Zato sem narisal grafa povprečnih starosti, ki sta ugotovila enako. Na podlagi njih sem predvidel še povprečno starost v naslednjem desetletju oz. v naslednjih letih. Treba pa je opozoriti, da se več kot za desetletje taka stvar nebi morala obdržati zaradi očitnih naravnih procesov.
 
