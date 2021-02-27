@@ -449,6 +449,7 @@ zamenjava <- setNames(rep("Scotland", length(scotland)), scotland) %>%
 mapdata$grofija <- zamenjava[as.character(mapdata$NAME_2)] %>% coalesce(mapdata$NAME_2)
 
 zemljevid <- tm_shape(merge(mapdata, grofije_tabela, by.x="grofija", by.y="id")) +
+  tmap_mode("view") +
   tm_polygons("Število festivalov", border.col=NULL, showNA=FALSE) +
-  labs(title = "Lokacije festivalih po grofijah")
+  labs(title = "Lokacije festivalov po grofijah") 
 

@@ -22,10 +22,18 @@ source("lib/libraries.r", encoding="UTF-8")
 source("lib/rstudio.r", encoding="UTF-8")
 ```
 
+```{r uvoz}
+source("uvoz/uvoz.r", encoding="UTF-8")
+```
+
+```{r vizualizacija, results='hide'}
+source("vizualizacija/vizualizacija.r", encoding="UTF-8")
+```
+
 # Izbira teme
 
 Analizirali bomo 14 velikih britanskih glasbenih festivalov. To so: 
-
+ 
   * Bestival (na Isle Of Wight in nekajkrat v Dorsetu )
   * Boardmasters (v Cornwallu)
   * Cornbury festival (v Oxfordshiru)
@@ -39,7 +47,13 @@ Analizirali bomo 14 velikih britanskih glasbenih festivalov. To so:
   * Rewind (v Berkshiru in na Škotskem)
   * T In The Park (na Škotskem)
   * V Festival (v Chelmsfordu)
-  * Wireless (v Londondu)
+  * Wireless (v Londondu) 
+  
+Grofije v katerih se te festivali odvijajo lahko vidimo na spodnjem zemljevidu:
+
+```{r zemljevid, echo=FALSE, fig.align='center', fig.height=4, fig.width=6}
+    zemljevid
+    ```  
   
 Analizirali bomo pogostost glasbenih zvrsti ter karakteristike izvajalcev, kot so spol, starost, izvor... Pogostost zvrsti na festivalih bomo po desetletjih primerjali tudi z glasbenimi lestvicami (oz. zvrsti najbolj prodajanih albumov).
 
@@ -59,10 +73,6 @@ Tabele glasbenih lestvic so bili zbrani iz Wikipedije:
 ***
 
 # Obdelava, uvoz in čiščenje podatkov
-
-```{r uvoz}
-source("uvoz/uvoz.r", encoding="UTF-8")
-```
 
 V drugi fazi smo uvozili podatke, ki so bili v obliki CSV.
 
@@ -102,10 +112,6 @@ Podatke o najbolj prodajanih albumih desetletij, sem uvozil v 5 različnih tabel
 ***
 
 # Analiza in vizualizacija podatkov
-
-```{r vizualizacija, results='hide'}
-source("vizualizacija/vizualizacija.r", encoding="UTF-8")
-```
 
 Prvi graf prikazuje pogostost zvrsti na festivalih v vseh letih opazovanja:
 
@@ -166,10 +172,14 @@ V Shinyju sem naredil 3 razdelke:
 
 # Napredna analiza
 
-#```{r, figures-side-2, fig.show="hold", out.width="50%"}
-#povprecne_starosti
-#povprecne_starosti_leta
-#```
+```{r analiza, results='hide'}
+source("analiza/analiza.r", encoding="UTF-8")
+```
+
+```{r, figures-side-2, fig.show="hold", out.width="50%"}
+povprecne_starosti
+povprecne_starosti_leta
+```
 
 V napredni analizi sem malo še naprej raziskal predpostavko, do katere sem prišel v Shiny analizi - da se izvajalci "starajo". Zato sem narisal grafa povprečnih starosti, ki sta ugotovila enako. Na podlagi njih sem predvidel še povprečno starost v naslednjem desetletju oz. v naslednjih letih. Treba pa je opozoriti, da se več kot za desetletje taka stvar nebi morala obdržati zaradi očitnih naravnih procesov.
 
