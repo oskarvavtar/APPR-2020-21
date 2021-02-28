@@ -187,3 +187,12 @@ povprecne_starosti_leta
 
 V napredni analizi sem malo še naprej raziskal predpostavko, do katere sem prišel v Shiny analizi - da se izvajalci "starajo". Zato sem narisal grafa povprečnih starosti, ki sta ugotovila enako. Na podlagi njih sem predvidel še povprečno starost v naslednjem desetletju oz. v naslednjih letih. Treba pa je opozoriti, da se več kot za desetletje taka stvar nebi morala obdržati zaradi očitnih naravnih procesov.
 
+***
+
+# Zaključek
+
+Iz dobljenih podatkov lahko razberemo predvsem dve zanimivi ugotovitvi. 
+
+Prva se tiče popularnosti zvrsti na festivalih. Jasno je videti, da je bil rock na analiziranih festivalih daleč najpopularnejša zvrst. Izkazal se je tudi kot bolj "festivalski" žanr, na festivalih je bil namreč bolj prisoten kot na lestvicah. Kot bolj "festivalske" žanre bi glede na analizirane podatke označili tudi indie, EDM in metal. Kot izrazito "nefestivalski" žanr se je izkazal pop.
+
+Druga ugotovitev se tiče starosti izvajalcev. Vidno je, da se nastopajoči "starajo". To lahko vidimo tako iz izračunanih povprečnih starosti, kot tudi iz analize starosti. Sklepamo lahko, da vseskozi na sceno prihajajo novi izvajalci, medtem ko stari izhajajo. Te hipotezi prikimava tudi analiza let začetka delovanja nastopajočih, kjer z desetletji vidimo vedno večji razpon.
