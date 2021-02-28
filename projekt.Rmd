@@ -49,11 +49,15 @@ Analizirali bomo 14 velikih britanskih glasbenih festivalov. To so:
   * V Festival (v Chelmsfordu)
   * Wireless (v Londondu) 
   
-Grofije v katerih se te festivali odvijajo lahko vidimo na spodnjem zemljevidu:
+Grofije, v katerih se te festivali odvijajo, lahko vidimo na spodnjem zemljevidu:
 
-```{r zemljevid, echo=FALSE, fig.align='center', fig.height=4, fig.width=6}
-    zemljevid
-    ```  
+```{r zemljevid}
+shinyApp(shinyUI(tmapOutput("zemljevid")),
+         shinyServer(function(input, output) {
+           output$zemljevid <- renderTmap(zemljevid)
+         }),
+         options=list(height=420))
+```  
   
 Analizirali bomo pogostost glasbenih zvrsti ter karakteristike izvajalcev, kot so spol, starost, izvor... Pogostost zvrsti na festivalih bomo po desetletjih primerjali tudi z glasbenimi lestvicami (oz. zvrsti najbolj prodajanih albumov).
 

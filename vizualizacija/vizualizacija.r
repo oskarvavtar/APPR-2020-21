@@ -450,6 +450,6 @@ mapdata$grofija <- zamenjava[as.character(mapdata$NAME_2)] %>% coalesce(mapdata$
 
 zemljevid <- tm_shape(merge(mapdata, grofije_tabela, by.x="grofija", by.y="id")) +
   tmap_mode("view") +
-  tm_polygons("Število festivalov", border.col=NULL, showNA=FALSE) +
+  tm_polygons("Število festivalov", border.col=NULL, showNA=FALSE, group="Število festivalov") +
   labs(title = "Lokacije festivalov po grofijah") 
 
